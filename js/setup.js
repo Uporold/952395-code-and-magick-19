@@ -111,6 +111,10 @@ setupUserNameInput.addEventListener('focus', function () {
   document.removeEventListener('keydown', onPopupEscPress);
 });
 
+setupUserNameInput.addEventListener('focusout', function () {
+  document.addEventListener('keydown', onPopupEscPress);
+});
+
 var setupWizard = document.querySelector('.setup-wizard');
 var wizardCoat = setupWizard.querySelector('.wizard-coat');
 var wizardEyes = setupWizard.querySelector('.wizard-eyes');
