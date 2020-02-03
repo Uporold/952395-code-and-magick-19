@@ -69,6 +69,7 @@ userDialog.querySelector('.setup-similar').classList.remove('hidden');
 var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
+var setupUserNameInput = document.querySelector('.setup-user-name');
 
 var onPopupEscPress = function (evt) {
   if (evt.key === ESC_KEY) {
@@ -106,21 +107,30 @@ setupClose.addEventListener('keydown', function (evt) {
   }
 });
 
+setupUserNameInput.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onPopupEscPress);
+});
+
 var setupWizard = document.querySelector('.setup-wizard');
 var wizardCoat = setupWizard.querySelector('.wizard-coat');
 var wizardEyes = setupWizard.querySelector('.wizard-eyes');
 var setupFireball = document.querySelector('.setup-fireball-wrap');
+var coatColorInput = document.querySelector('input[name=coat-color]');
+var eyesColorInput = document.querySelector('input[name=eyes-color]');
+var fireballColorInput = document.querySelector('input[name=fireball-color]');
 
 var changeCoatColor = function () {
   wizardCoat.style.fill = generateRandomWizard().coatColor;
+  coatColorInput.value = wizardCoat.style.fill;
 };
 
 var changeEyesColor = function () {
   wizardEyes.style.fill = generateRandomWizard().eyesColor;
+  eyesColorInput.value = wizardEyes.style.fill;
 };
 
 var changeFireballColor = function () {
-  setupFireball.style.backgroundColor = WIZARD_FIREBALL_COLORS[getRandomItem(WIZARD_FIREBALL_COLORS)];
+  fireballColorInput.value = setupFireball.style.backgroundColor = WIZARD_FIREBALL_COLORS[getRandomItem(WIZARD_FIREBALL_COLORS)];
 };
 
 wizardCoat.addEventListener('click', function () {
