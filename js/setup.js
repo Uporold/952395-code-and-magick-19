@@ -53,4 +53,6 @@
   setupUserNameInput.addEventListener('focusout', function () {
     document.addEventListener('keydown', onPopupEscPress);
   });
+
+
 })();
