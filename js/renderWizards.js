@@ -47,10 +47,10 @@
 
   var form = userDialog.querySelector('.setup-wizard-form');
   form.addEventListener('submit', function (evt) {
-    window.save(new FormData(form), saveHandler, errorHandler);
+    window.backend.save(new FormData(form), saveHandler, errorHandler);
     evt.preventDefault();
   });
 
   userDialog.querySelector('.setup-similar').classList.remove('hidden');
-  window.load(successHandler, errorHandler);
+  window.backend.load(successHandler, errorHandler);
 })();

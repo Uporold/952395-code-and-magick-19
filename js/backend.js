@@ -1,43 +1,45 @@
 'use strict';
 
-(function () {
+window.backend = (function () {
   var URL = 'https://js.dump.academy/code-and-magick/data';
+  var DESTINATION = 'https://js.dump.academy/code-and-magick/';
   var StatusCode = {
     OK: 200
   };
   var TIMEOUT_IN_MS = 10000;
 
-  var xhr = new XMLHttpRequest();
-  xhr.responseType = 'json';
-
-  var xhrHandler = function (onLoad, onError) {
-    xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
-        onLoad(xhr.response);
+  var xhrHandler = function (onLoad, onError, xhrObject) {
+    xhrObject.responseType = 'json';
+    xhrObject.addEventListener('load', function () {
+      if (xhrObject.status === StatusCode.OK) {
+        onLoad(xhrObject.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Статус ответа: ' + xhrObject.status + ' ' + xhrObject.statusText);
       }
     });
-    xhr.addEventListener('error', function () {
+    xhrObject.addEventListener('error', function () {
       onError('Произошла ошибка соединения');
     });
-    xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    xhrObject.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhrObject.timeout + 'мс');
     });
   };
 
-  window.load = function (onLoad, onError) {
-    xhrHandler(onLoad, onError);
+  return {
+    load: function (onLoad, onError, xhrLoad) {
+      xhrLoad = xhrLoad || new XMLHttpRequest();
+      xhrHandler(onLoad, onError, xhrLoad);
 
-    xhr.timeout = TIMEOUT_IN_MS; // 10s
+      xhrLoad.timeout = TIMEOUT_IN_MS; // 10s
 
-    xhr.open('GET', URL);
-    xhr.send();
-  };
-  var DESTINATION = 'https://js.dump.academy/code-and-magick/';
-  window.save = function (data, onLoad, onError) {
-    xhrHandler(onLoad, onError);
-    xhr.open('POST', DESTINATION);
-    xhr.send(data);
+      xhrLoad.open('GET', URL);
+      xhrLoad.send();
+    },
+    save: function (data, onLoad, onError, xhrSave) {
+      xhrSave = xhrSave || new XMLHttpRequest();
+      xhrHandler(onLoad, onError, xhrSave);
+      xhrSave.open('POST', DESTINATION);
+      xhrSave.send(data);
+    }
   };
 })();
